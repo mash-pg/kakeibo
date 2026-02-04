@@ -12,7 +12,7 @@ public class Transaction {
 	private final TransactionId id;
 	private TransactionType type;
 	private Amount amount;
-	private final CategoryId categoryId;
+	private CategoryId categoryId;
 	private String description;
 	private LocalDate transactionDate;
 	private LocalDateTime createdAt;
