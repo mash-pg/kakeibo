@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.kakeibo.application.usecase.CreateTransactionUseCase;
 import com.example.kakeibo.application.usecase.DeleteTransactionUseCase;
+import com.example.kakeibo.application.usecase.GetMonthlySummaryUseCase;
 import com.example.kakeibo.application.usecase.GetTransactionUseCase;
 import com.example.kakeibo.application.usecase.ListTransactionsUseCase;
 import com.example.kakeibo.application.usecase.UpdateTransactionUseCase;
@@ -35,6 +37,7 @@ public class TransactionController {
 	private final DeleteTransactionUseCase deleteTransactionUseCase;
 	private final GetTransactionUseCase getTransactionUseCase;
 	private final CreateTransactionUseCase createTransactionUseCase;
+	private final GetMonthlySummaryUseCase getMonthlySummaryUseCase;
 	
 	
 	public TransactionController(
@@ -42,13 +45,15 @@ public class TransactionController {
 			CreateTransactionUseCase createTransactionUseCase,
 			ListTransactionsUseCase listTransactionsUseCase,
 			UpdateTransactionUseCase updateTransactionUseCase,
-			DeleteTransactionUseCase deleteTransactionUseCase
+			DeleteTransactionUseCase deleteTransactionUseCase,
+			GetMonthlySummaryUseCase getMonthlySummaryUseCase
 			) {
 		this.getTransactionUseCase = getTransactionUseCase;
 		this.createTransactionUseCase = createTransactionUseCase;
 		this.listTransactionsUseCase = listTransactionsUseCase;
 		this.updateTransactionUseCase = updateTransactionUseCase;
 		this.deleteTransactionUseCase = deleteTransactionUseCase;
+		this.getMonthlySummaryUseCase = getMonthlySummaryUseCase;
 	}
 	
 	@PostMapping
@@ -113,5 +118,15 @@ public class TransactionController {
 		deleteTransactionUseCase.execute(id);
 		return ResponseEntity.noContent().build();
 		
+	}
+	
+	@GetMapping("/summary")
+	public ResponseEntity<Object> summary(
+	        @RequestParam int year,
+	        @RequestParam int month,
+	        @RequestParam(required = false) String type
+	) {
+		Object result = getMonthlySummaryUseCase.execute(year, month, type);
+	    return ResponseEntity.ok(result);
 	}
 }
