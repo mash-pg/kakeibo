@@ -8,6 +8,7 @@ import com.example.kakeibo.domain.entity.Transaction;
 import com.example.kakeibo.domain.repository.TransactionRepository;
 import com.example.kakeibo.domain.strategy.CategorySummaryStrategy;
 import com.example.kakeibo.domain.strategy.MonthlySummaryStrategy;
+import com.example.kakeibo.domain.strategy.SummaryResult;
 import com.example.kakeibo.domain.strategy.SummaryStrategy;
 
 @Service
@@ -17,7 +18,7 @@ public class GetMonthlySummaryUseCase {
 	public GetMonthlySummaryUseCase(TransactionRepository transactionRepository) {
 		this.transactionRepository = transactionRepository;
 	}
-	public Object execute(int year,int month,String type) {
+	public SummaryResult execute(int year,int month,String type) {
 		List<Transaction> transactions = transactionRepository.findAll();
 		
 		SummaryStrategy strategy;

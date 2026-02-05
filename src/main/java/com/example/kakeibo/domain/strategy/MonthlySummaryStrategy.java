@@ -1,8 +1,6 @@
 package com.example.kakeibo.domain.strategy;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.example.kakeibo.domain.entity.Transaction;
@@ -11,7 +9,7 @@ import com.example.kakeibo.domain.valueobject.TransactionType;
 public class MonthlySummaryStrategy implements SummaryStrategy{
 
 	@Override
-	public Map<String, Object> calculate(List<Transaction> transactions, int year, int month) {
+	public SummaryResult calculate(List<Transaction> transactions, int year, int month) {
         // 1. transactions を year と month でフィルタリング
 		List<Transaction> filtered = transactions.stream()
 				.filter(t -> t.getTransactionDate().getYear() == year)
@@ -29,14 +27,8 @@ public class MonthlySummaryStrategy implements SummaryStrategy{
 				.sum();
         // 4. 残高（INCOME - EXPENSE）を計算
 		int balance = totalIncome - totalExpense;
-		Map<String,Object> result = new HashMap<>();
-		result.put("year", year);
-		result.put("month", month);
-		result.put("totalIncome", totalIncome);
-		result.put("totalExpense", totalExpense);
-		result.put("balance", balance);
 		
-		return result;
+		return new MonthlySummaryResult(year, month, totalIncome, totalExpense, balance);
 	}
 	
 }

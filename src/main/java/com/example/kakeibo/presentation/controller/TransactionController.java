@@ -1,6 +1,7 @@
 package com.example.kakeibo.presentation.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,12 @@ import com.example.kakeibo.application.usecase.GetTransactionUseCase;
 import com.example.kakeibo.application.usecase.ListTransactionsUseCase;
 import com.example.kakeibo.application.usecase.UpdateTransactionUseCase;
 import com.example.kakeibo.domain.entity.Transaction;
+import com.example.kakeibo.domain.strategy.CategorySummaryResult;
+import com.example.kakeibo.domain.strategy.MonthlySummaryResult;
+import com.example.kakeibo.domain.strategy.SummaryResult;
+import com.example.kakeibo.presentation.dto.CategorySummaryResponse;
 import com.example.kakeibo.presentation.dto.CreateTransactionRequest;
+import com.example.kakeibo.presentation.dto.MonthlySummaryResponse;
 import com.example.kakeibo.presentation.dto.TransactionResponse;
 import com.example.kakeibo.presentation.dto.UpdateTransactionRequest;
 
@@ -126,7 +132,25 @@ public class TransactionController {
 	        @RequestParam int month,
 	        @RequestParam(required = false) String type
 	) {
-		Object result = getMonthlySummaryUseCase.execute(year, month, type);
-	    return ResponseEntity.ok(result);
+		SummaryResult result = getMonthlySummaryUseCase.execute(year, month, type);
+	    
+		if("category".equals(type)) {
+			CategorySummaryResult categoryResult = (CategorySummaryResult) result;
+			List<CategorySummaryResponse> response = categoryResult.getCategoryTotals().stream()
+					.map(e -> new CategorySummaryResponse(e.getCategoryId(), e.getTotalAmount()))
+					.collect(Collectors.toList());
+			
+			return ResponseEntity.ok(response);
+		}else {
+			MonthlySummaryResult monthlyResult = (MonthlySummaryResult) result;
+	          MonthlySummaryResponse response = new MonthlySummaryResponse(
+	                  monthlyResult.getYear(),
+	                  monthlyResult.getMonth(),
+	                  monthlyResult.getTotalIncome(),
+	                  monthlyResult.getTotalExpense(),
+	                  monthlyResult.getBalance()
+	          );
+	          return ResponseEntity.ok(response);
+		}
 	}
 }

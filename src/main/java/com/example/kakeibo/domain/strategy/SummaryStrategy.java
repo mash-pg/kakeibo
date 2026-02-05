@@ -7,5 +7,5 @@ import com.example.kakeibo.domain.entity.Transaction;
 
 
 public interface SummaryStrategy {
-	Object calculate(List<Transaction> transactions,int year,int month);
+	SummaryResult calculate(List<Transaction> transactions,int year,int month);
 }

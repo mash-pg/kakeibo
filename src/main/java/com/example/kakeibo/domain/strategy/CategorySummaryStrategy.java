@@ -10,7 +10,7 @@ import com.example.kakeibo.domain.valueobject.TransactionType;
 public class CategorySummaryStrategy implements SummaryStrategy{
 
 	@Override
-	public Object calculate(List<Transaction> transactions, int year, int month) {
+	public SummaryResult calculate(List<Transaction> transactions, int year, int month) {
         // 1. transactions を year と month でフィルタリング
 		List<Transaction> filtered = transactions.stream()
 				.filter(t -> t.getTransactionDate().getYear() == year)
@@ -24,8 +24,11 @@ public class CategorySummaryStrategy implements SummaryStrategy{
 						Collectors.summingInt(t->t.getAmount().getValue())
 						));
 		
+		 List<CategorySummaryResult.CategoryTotal> categoryTotals = grouped.entrySet().stream()
+	              .map(e -> new CategorySummaryResult.CategoryTotal(e.getKey(), e.getValue()))
+	              .collect(Collectors.toList());
 
-		return grouped;
+		return new CategorySummaryResult(categoryTotals);
 	}
 	
 }
