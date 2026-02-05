@@ -14,12 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.kakeibo.application.usecase.CreateCategoryUseCase;
 import com.example.kakeibo.application.usecase.CreateTransactionUseCase;
-import com.example.kakeibo.application.usecase.DeleteCategoryUseCase;
 import com.example.kakeibo.application.usecase.DeleteTransactionUseCase;
 import com.example.kakeibo.application.usecase.GetTransactionUseCase;
-import com.example.kakeibo.application.usecase.ListCategoriesUseCase;
 import com.example.kakeibo.application.usecase.ListTransactionsUseCase;
 import com.example.kakeibo.application.usecase.UpdateTransactionUseCase;
 import com.example.kakeibo.domain.entity.Transaction;
