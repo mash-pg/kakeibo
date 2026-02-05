@@ -19,9 +19,9 @@ public class GetTransactionUseCase {
 	) {
 		this.transactionRepository = transactionRepository;
 	}
-	public Transaction execute(TransactionId id) {
-		
-		 return transactionRepository.findById(id)
+	public Transaction execute(Long id) {
+		 TransactionId transactionId = new TransactionId(id); 
+		 return transactionRepository.findById(transactionId)
 				.orElseThrow(()->new TransactionNotFoundException("収支がみつかりません"));
 	}
 	

@@ -19,12 +19,13 @@ public class CreateCategoryUseCase {
 			CategoryRepository categoryRepository) {
 		this.categoryRepository =  categoryRepository;
 	}
-	public void execute(CategoryName name) {
-		boolean isUse = categoryRepository.existsByName(name);
+	public Category execute(String name) {
+		CategoryName categoryName = new CategoryName(name);
+		boolean isUse = categoryRepository.existsByName(categoryName);
 		if(isUse) {
 			throw new InvalidCategoryException("すでにカテゴリが存在しております");
 		}
-		categoryRepository.save(new Category(null,name));
+		return categoryRepository.save(new Category(null,categoryName));
 	}
 	
 }

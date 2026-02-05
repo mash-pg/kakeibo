@@ -16,8 +16,9 @@ public class DeleteTransactionUseCase {
 	) {
 		this.transactionRepository = transactionRepository;
 	}
-	public void execute(TransactionId id) {
-		transactionRepository.deleteById(id);
+	public void execute(Long id) {
+		TransactionId tranId = new TransactionId(id);
+		transactionRepository.deleteById(tranId);
 	}
 	
 	
