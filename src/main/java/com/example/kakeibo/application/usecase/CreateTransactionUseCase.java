@@ -2,12 +2,12 @@ package com.example.kakeibo.application.usecase;
 
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
 import com.example.kakeibo.domain.entity.Transaction;
 import com.example.kakeibo.domain.exception.CategoryNotFoundException;
+import com.example.kakeibo.domain.factory.TransactionFactory;
 import com.example.kakeibo.domain.repository.CategoryRepository;
 import com.example.kakeibo.domain.repository.TransactionRepository;
 import com.example.kakeibo.domain.valueobject.Amount;
@@ -40,14 +40,12 @@ public class CreateTransactionUseCase {
 		categoryRepository.findById(catId)
 		.orElseThrow(()->new CategoryNotFoundException("カテゴリがみつかりません"));
 		
-		Transaction transaction = new Transaction(
-				null,
-				amt,
-				type,
-				catId,
-				description,
-				transactionDate,
-				LocalDateTime.now()
+		Transaction transaction = TransactionFactory.create(
+					type,
+					amt,
+					catId,
+					description,
+					transactionDate
 				);
 		//登録処理
 		return transactionRepository.save(transaction);
